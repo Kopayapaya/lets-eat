@@ -73,6 +73,7 @@ const PlacesService = (() => {
                 location: new google.maps.LatLng(location.lat, location.lng),
                 radius: radius,
                 type: type,
+                openNow: true,  // API側で営業中の店舗を優先
                 language: 'ja'
             };
 
@@ -253,6 +254,11 @@ const PlacesService = (() => {
         const isWeekend = day === 0 || day === 6;
         const reviewCount = place.user_ratings_total || 0;
         const rating = place.rating || 3.0;
+
+        // 営業時間外・早朝・深夜は必ず「空いている」
+        if (hour < 10 || hour >= 22) {
+            return { level: 'empty', label: '空いている', color: '#4fc3f7' };
+        }
 
         // 時間帯スコア（ピーク時間ほど高い）
         let timeScore = 0;
