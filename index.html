@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Let's Eat - 今すぐ近くの美味しいお店を見つけよう。GPSで周辺の飲食店をワンタップ検索。">
+    <meta name="theme-color" content="#1a1114">
+    <title>Let's Eat - 今すぐ食事を見つけよう</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400;1,700&family=Inter:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <!-- ===== SCREEN 1: TOP / SPLASH ===== -->
+    <div id="screen-top" class="screen active">
+        <div class="top-container">
+            <!-- Header Logo -->
+            <div class="top-header">
+                <p class="logo-pre">- discover your next meal -</p>
+                <h1 class="logo-text">Let's Eat</h1>
+                <p class="logo-subtitle">あなたの近くの、とっておきの一皿を</p>
+            </div>
+
+            <!-- Decorative line -->
+            <div class="deco-line">
+                <span class="deco-diamond">◆</span>
+            </div>
+
+            <!-- Main Button -->
+            <button id="btn-lets-eat" class="btn-lets-eat" aria-label="お店を検索">
+                <span class="btn-lets-eat-text">Let's Eat</span>
+            </button>
+
+            <!-- Filters -->
+            <div class="filters-section">
+                <!-- Category Filter -->
+                <div class="filter-group">
+                    <h3 class="filter-label">Category</h3>
+                    <div class="filter-buttons" id="filter-category">
+                        <button class="filter-btn active" data-value="restaurant" data-type="category">
+                            <span class="filter-emoji">🍽️</span>レストラン
+                        </button>
+                        <button class="filter-btn" data-value="cafe" data-type="category">
+                            <span class="filter-emoji">☕</span>カフェ
+                        </button>
+                        <button class="filter-btn" data-value="bar" data-type="category">
+                            <span class="filter-emoji">🥂</span>バー
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Distance Filter -->
+                <div class="filter-group">
+                    <h3 class="filter-label">Distance</h3>
+                    <div class="filter-buttons" id="filter-distance">
+                        <button class="filter-btn active" data-value="400" data-type="distance">
+                            <span class="filter-emoji">🚶</span>徒歩5分
+                        </button>
+                        <button class="filter-btn" data-value="800" data-type="distance">
+                            <span class="filter-emoji">🚶</span>徒歩10分
+                        </button>
+                        <button class="filter-btn" data-value="3300" data-type="distance">
+                            <span class="filter-emoji">🚗</span>車で10分
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Budget Filter -->
+                <div class="filter-group">
+                    <h3 class="filter-label">Budget</h3>
+                    <div class="filter-buttons" id="filter-budget">
+                        <button class="filter-btn" data-value="1000" data-type="budget">¥1,000</button>
+                        <button class="filter-btn" data-value="3000" data-type="budget">¥3,000</button>
+                        <button class="filter-btn" data-value="5000" data-type="budget">¥5,000</button>
+                        <button class="filter-btn" data-value="10000" data-type="budget">¥10,000</button>
+                        <button class="filter-btn" data-value="10001" data-type="budget">¥10,000～</button>
+                    </div>
+                </div>
+
+                <!-- Smoking Filter -->
+                <div class="filter-group">
+                    <h3 class="filter-label">Smoking</h3>
+                    <div class="filter-buttons" id="filter-smoking">
+                        <button class="filter-btn active" data-value="any" data-type="smoking">指定なし</button>
+                        <button class="filter-btn" data-value="allowed" data-type="smoking">🚬 喫煙可</button>
+                        <button class="filter-btn" data-value="no-smoking" data-type="smoking">🚭 禁煙</button>
+                    </div>
+                </div>
+
+                <!-- Cuisine Filter -->
+                <div class="filter-group" id="filter-group-cuisine">
+                    <h3 class="filter-label">Cuisine</h3>
+                    <div class="filter-buttons" id="filter-cuisine">
+                        <button class="filter-btn" data-value="居酒屋" data-type="cuisine">🏮 居酒屋</button>
+                        <button class="filter-btn" data-value="イタリアン" data-type="cuisine">🍝 イタリアン</button>
+                        <button class="filter-btn" data-value="中華" data-type="cuisine">🥟 中華</button>
+                        <button class="filter-btn" data-value="フレンチ" data-type="cuisine">🥐 フレンチ</button>
+                        <button class="filter-btn" data-value="和食" data-type="cuisine">🍣 和食</button>
+                        <button class="filter-btn" data-value="ラーメン" data-type="cuisine">🍜 ラーメン</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="top-footer">
+                <p>Powered by Google Maps</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== SCREEN 2: LOADING ===== -->
+    <div id="screen-loading" class="screen">
+        <div class="loading-container">
+            <div class="loading-spinner">
+                <div class="spinner-ring"></div>
+                <div class="spinner-ring spinner-ring-2"></div>
+            </div>
+            <p class="loading-text" id="loading-text">位置情報を取得中...</p>
+            <div class="loading-dots">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== SCREEN 3: RESULTS ===== -->
+    <div id="screen-results" class="screen">
+        <div class="results-header">
+            <button id="btn-back" class="btn-icon" aria-label="戻る">
+                <span>←</span>
+            </button>
+            <div class="results-title">
+                <h2>Nearby</h2>
+                <p id="results-count" class="results-count"></p>
+            </div>
+            <button id="btn-refresh" class="btn-icon" aria-label="再検索">
+                <span>↻</span>
+            </button>
+        </div>
+        <div id="results-grid" class="results-grid">
+            <!-- Cards will be inserted by JS -->
+        </div>
+        <div id="no-results" class="no-results hidden">
+            <span class="no-results-icon">🍷</span>
+            <p>見つかりませんでした</p>
+            <p class="no-results-sub">条件を変えて再検索してみてください</p>
+            <button id="btn-retry" class="btn-secondary">条件を変更する</button>
+        </div>
+    </div>
+
+    <!-- ===== MODAL: PLACE DETAIL ===== -->
+    <div id="modal-detail" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button id="btn-modal-close" class="btn-modal-close" aria-label="閉じる">&times;</button>
+            <div class="modal-photo-wrapper">
+                <img id="modal-photo" class="modal-photo" src="" alt="店舗写真">
+                <div class="modal-photo-overlay"></div>
+            </div>
+            <div class="modal-body">
+                <h2 id="modal-name" class="modal-name"></h2>
+                <div class="modal-meta">
+                    <span id="modal-rating" class="modal-rating"></span>
+                    <span id="modal-reviews" class="modal-reviews"></span>
+                    <span id="modal-price" class="modal-price"></span>
+                </div>
+
+                <!-- Congestion Badge -->
+                <div id="modal-congestion" class="modal-congestion"></div>
+
+                <!-- Atmosphere / Appeal Points -->
+                <div id="modal-appeal" class="modal-appeal hidden"></div>
+
+                <div class="modal-info">
+                    <div class="modal-info-row">
+                        <span class="modal-info-icon">📍</span>
+                        <span id="modal-address" class="modal-info-text"></span>
+                    </div>
+                    <div class="modal-info-row">
+                        <span class="modal-info-icon">🚶</span>
+                        <span id="modal-distance" class="modal-info-text"></span>
+                    </div>
+                    <div class="modal-info-row">
+                        <span class="modal-info-icon">🕐</span>
+                        <span id="modal-status" class="modal-info-text"></span>
+                    </div>
+                    <div id="modal-hours-row" class="modal-info-row hidden">
+                        <span class="modal-info-icon">📅</span>
+                        <span id="modal-hours" class="modal-info-text"></span>
+                    </div>
+                    <div id="modal-smoking-row" class="modal-info-row hidden">
+                        <span class="modal-info-icon">🚬</span>
+                        <span id="modal-smoking" class="modal-info-text"></span>
+                    </div>
+                </div>
+                <a id="modal-navigate" class="btn-navigate" href="#" target="_blank" rel="noopener noreferrer">
+                    ここに行く
+                </a>
+                <a id="modal-tabelog" class="btn-tabelog" href="#" target="_blank" rel="noopener noreferrer">
+                    📖 食べログで詳細を見る
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== ERROR TOAST ===== -->
+    <div id="toast" class="toast hidden">
+        <span id="toast-message"></span>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        const CONFIG = {
+            API_KEY: 'AIzaSyAtg0MOAaBKX-BWmFbPi3BjCyWI4havZ5E',
+            SEARCH_RADIUS: 800,
+            DEFAULT_CATEGORY: 'restaurant'
+        };
+    </script>
+    <script src="js/location.js"></script>
+    <script src="js/places.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/app.js"></script>
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAtg0MOAaBKX-BWmFbPi3BjCyWI4havZ5E&libraries=places&callback=initApp&loading=async"
+        async defer>
+        </script>
+</body>
+
+</html>
