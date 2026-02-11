@@ -175,6 +175,12 @@ const PlacesService = (() => {
 
             service.getDetails(request, (place, status) => {
                 if (status === google.maps.places.PlacesServiceStatus.OK && place) {
+                    // 正確な営業時間判定
+                    let isActuallyOpen = null;
+                    if (place.opening_hours && place.opening_hours.weekday_text) {
+                        isActuallyOpen = HoursParser.isCurrentlyOpen(place.opening_hours.weekday_text);
+                    }
+
                     resolve({
                         openingHours: place.opening_hours || null,
                         reviews: place.reviews || [],
@@ -182,7 +188,8 @@ const PlacesService = (() => {
                         editorialSummary: place.editorial_summary ? place.editorial_summary.text : null,
                         website: place.website || null,
                         phone: place.formatted_phone_number || null,
-                        mapsUrl: place.url || null
+                        mapsUrl: place.url || null,
+                        isActuallyOpen: isActuallyOpen  // 正確な営業状態
                     });
                 } else {
                     console.warn('Place Details 取得失敗:', status);

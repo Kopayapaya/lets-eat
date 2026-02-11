@@ -232,6 +232,15 @@ const UI = (() => {
      * Place Details の情報でモーダルを更新
      */
     function updateModalWithDetails(place, details) {
+        // 正確な営業状態を表示
+        if (details.isActuallyOpen === false) {
+            // 営業時間外と確定
+            els.modalStatus.innerHTML = '<span style="color: #ef5350;">🕐 営業時間外</span>';
+        } else if (details.isActuallyOpen === true) {
+            // 営業中と確定
+            els.modalStatus.innerHTML = '<span style="color: #66bb6a;">🕐 営業中</span>';
+        }
+
         // 今日の営業時間
         if (details.openingHours && details.openingHours.weekday_text) {
             const today = new Date().getDay();
@@ -241,6 +250,28 @@ const UI = (() => {
             if (todayText) {
                 els.modalHours.textContent = todayText;
                 els.modalHoursRow.classList.remove('hidden');
+            }
+        }
+
+        // レビューベースの混雑度調整
+        if (details.reviews && details.reviews.length > 0) {
+            const reviewCongestion = HoursParser.estimateCongestionFromReviews(details.reviews);
+
+            // レビューで強い傾向が見られた場合は混雑バッジを更新
+            if (reviewCongestion === 'crowded') {
+                // 「行列」「混雑」などのキーワードが多い
+                const congestionBadge = els.modalCongestion.querySelector('.congestion-badge');
+                if (congestionBadge && !congestionBadge.textContent.includes('混雑')) {
+                    congestionBadge.textContent = '🔥 混雑しやすい';
+                    congestionBadge.style.background = 'linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%)';
+                }
+            } else if (reviewCongestion === 'empty') {
+                // 「空いて」「穴場」などのキーワードが多い
+                const congestionBadge = els.modalCongestion.querySelector('.congestion-badge');
+                if (congestionBadge) {
+                    congestionBadge.textContent = '✨ 穴場';
+                    congestionBadge.style.background = 'linear-gradient(135deg, #4fc3f7 0%, #29b6f6 100%)';
+                }
             }
         }
 
