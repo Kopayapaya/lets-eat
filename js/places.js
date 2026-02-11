@@ -73,7 +73,6 @@ const PlacesService = (() => {
                 location: new google.maps.LatLng(location.lat, location.lng),
                 radius: radius,
                 type: type,
-                openNow: true,
                 language: 'ja'
             };
 
@@ -101,9 +100,8 @@ const PlacesService = (() => {
                     let places = results.map(place => formatPlace(place, location));
                     console.log('フォーマット後:', places.length, '件');
 
-                    // 営業中の店舗のみ表示（isOpen === true のみ通す）
-                    // openNow: true でAPI側でもフィルタしているが、念のため二重チェック
-                    places = places.filter(p => p.isOpen === true);
+                    // 営業中の店舗を優先（営業時間外は除外、不明はOK）
+                    places = places.filter(p => p.isOpen !== false);
                     console.log('営業中フィルター後:', places.length, '件');
 
                     // 距離でフィルタリング（API radius は概算なので正確に絞る）
