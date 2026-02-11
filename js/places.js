@@ -99,13 +99,16 @@ const PlacesService = (() => {
 
                 if (status === google.maps.places.PlacesServiceStatus.OK && results) {
                     let places = results.map(place => formatPlace(place, location));
+                    console.log('フォーマット後:', places.length, '件');
 
                     // 営業中の店舗のみ表示（isOpen === true のみ通す）
                     // openNow: true でAPI側でもフィルタしているが、念のため二重チェック
                     places = places.filter(p => p.isOpen === true);
+                    console.log('営業中フィルター後:', places.length, '件');
 
                     // 距離でフィルタリング（API radius は概算なので正確に絞る）
                     places = places.filter(p => p.distance <= radius);
+                    console.log('距離フィルター後:', places.length, '件');
 
                     // 予算フィルタリング
                     if (filters.budget) {
@@ -116,6 +119,7 @@ const PlacesService = (() => {
                                 return p.priceLevel >= priceRange.min && p.priceLevel <= priceRange.max;
                             });
                         }
+                        console.log('予算フィルター後:', places.length, '件');
                     }
 
                     // 評価順にソート（高い順 → 同評価ならレビュー数順）
