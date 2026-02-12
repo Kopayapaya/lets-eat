@@ -7,7 +7,7 @@
 const AppState = {
     filters: {
         category: 'restaurant',
-        distance: '400',   // デフォルト: 徒歩5分 = 400m
+        distance: '400',   // 固定: 徒歩5分 = 400m
         budget: null,
         smoking: 'any',    // デフォルト: 指定なし
         cuisine: null
@@ -44,11 +44,6 @@ function setupFilters() {
                     AppState.filters.cuisine = null;
                     document.querySelectorAll(`[data-type="cuisine"]`).forEach(b => b.classList.remove('active'));
                 }
-            } else if (type === 'distance') {
-                // 距離は単一選択（常にどれか1つ）
-                document.querySelectorAll(`[data-type="distance"]`).forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                AppState.filters.distance = value;
             } else if (type === 'budget') {
                 // 予算はトグル（再度クリックで解除）
                 const isActive = btn.classList.contains('active');
